@@ -8,10 +8,10 @@ const Dialogs = (props) => {
     return (
         <div className={d.dialogs}>
             <div className={d.dialogItems}>
-                {props.dialogsData.map(dialog => <DialogItem name={dialog.name} id={dialog.id} />)}
+                {props.state.dialogsData.map(dialog => <DialogItem name={dialog.name} id={dialog.id} />)}
             </div>
             <div className={d.messages}>
-                {props.messagesData.map(message => <Message message={message.message} />)}
+                {props.state.messagesData.map(message => <Message message={message.message} />)}
             </div>
         </div>
     )
