@@ -1,17 +1,19 @@
 import React from 'react';
 import classes from './MyPosts.module.css';
 import Post from './Post/Post';
+import { addPostActionCreator, updateNewPostTextActionCreator } from '../../../store/state';  
 
 const MyPosts = (props) => {
-  let onPostChange = (event) => {
-    let text = event.target.value;
-    console.log(text);
-    props.dispatch({ type: 'UPDATE-NEW-POST-TEXT', newText: text });
-  }
   let newPostElement = React.createRef();
 
+    let onPostChange = (event) => {
+    let text = event.target.value;
+    console.log(text);
+    props.dispatch(updateNewPostTextActionCreator(text));
+  }
+
   let addPost = () => {
-    props.dispatch({ type: 'ADD-POST' });
+    props.dispatch(addPostActionCreator());
   };
 
   return (
