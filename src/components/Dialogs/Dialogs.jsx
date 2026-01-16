@@ -1,21 +1,21 @@
-import { NavLink } from 'react-router-dom';
 import d from './Dialogs.module.css'
 import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
 import { sendMessageCreator, updateNewMessageBodyCreator } from '../../store/dialogs-reducer';
 
 const Dialogs = (props) => {
-    let state = props.store.getState().messagesPage;
+    let state = props.messagesPage;
     const dialogsElements = state.dialogsData.map(dialog => <DialogItem name={dialog.name} id={dialog.id} />);  
     const messagesElements = state.messagesData.map(message => <Message message={message.message} />);
     const newMessageBody = state.newMessageBody;
     
     const onSendMessageClick = () => {
-        props.store.dispatch(sendMessageCreator())
+        props.sendMessage()
     };
+
     const onNewMessageChange = (event) => {
         const body = event.target.value;
-        props.store.dispatch(updateNewMessageBodyCreator(body));
+        props.updateNewMessageBody(body)
     }     
 
     return (
