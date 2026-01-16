@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
-import store from './store/state.jsx';
+import store from './store/redux-store.jsx';
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
@@ -16,6 +16,9 @@ let rerenderTree = (state) => {
 
 rerenderTree(store.getState());
 
-store.subscribe(rerenderTree);
+store.subscribe(() => {
+  let state = store.getState()
+  rerenderTree(state)
+});
 
 
