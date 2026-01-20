@@ -27,7 +27,7 @@ const MyPosts = (props) => {
         <button >Remove</button>
       </div>
       <div className={classes.posts}>
-        {props.posts.map(post => <Post message={post.message} likesCount={post.likesCount} />)}
+        {props.posts.map(post => <Post key={post.id} message={post.message} likesCount={post.likesCount} />)}
       </div>
     </div>
   )
