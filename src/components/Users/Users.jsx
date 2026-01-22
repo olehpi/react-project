@@ -1,21 +1,21 @@
+import React from "react";
 import axios from "axios";
 import styles from "./Users.module.css";
 import userPhoto from "../../assets/images/user.png";
 
+class Users extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
-let Users = (props) => {
-
-    if (props.users.length === 0) {
+    componentDidMount() {
         axios.get("/project/api/1.0/users", {
             params: {
                 count: 10, // only 10 users per page
                 page: 1   // first page
             }
         }).then(response => {
-            const uniqueUsers = response.data.items.filter(
-                (user, index, self) => index === self.findIndex(u => u.id === user.id)
-            );
-            props.setUsers([
+            this.props.setUsers([
                 {
                     id: 1, photos: { small: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSvJvP9yGgZ9GPbRw9YkBPbOKDfH59iea3rg&s', large: '' },
                     followed: true, name: 'Oleh', status: 'Admin', location: { city: 'War', country: 'Poland' }
@@ -34,42 +34,42 @@ let Users = (props) => {
                 }
             ]
             );
-            console.log("Before setUsers:", props.users.map(u => u.id));
-            props.setUsers(uniqueUsers);
-            console.log("After setUsers:", uniqueUsers.map(u => u.id));
+            this.props.setUsers(response.data.items);
+            console.log("Before setUsers:", this.props.users.map(u => u.id));
         });
     }
 
-    return <div>
-        {
-            props.users.map(u => <div key={u.id}>
-                <span>
-                    <div>
-                        <img src={u.photos.small != null ? u.photos.small : userPhoto} className={styles.userPhoto} />
-                    </div>
-                    <div>
-                        {
-                            u.followed
-                                ? <button onClick={() => props.unfollow(u.id)}> Unfollow </button>
-                                : <button onClick={() => props.follow(u.id)}> follow </button>
-                        }
-
-                    </div>
-                </span>
-                <span>
+    render() {
+        return <div>
+            {
+                this.props.users.map(u => <div key={u.id}>
                     <span>
-                        <div> {u.name} </div>
-                        <div> {u.status} </div>
+                        <div>
+                            <img src={u.photos.small != null ? u.photos.small : userPhoto} className={styles.userPhoto} />
+                        </div>
+                        <div>
+                            {
+                                u.followed
+                                    ? <button onClick={() => this.props.unfollow(u.id)}> Unfollow </button>
+                                    : <button onClick={() => this.props.follow(u.id)}> follow </button>
+                            }
+                        </div>
                     </span>
-                </span>
-                <span>
-                    <div> {"u.location.country"} </div>
-                    <div> {"u.location.city"} </div>
-                </span>
-            </div>
-            )
-        }
-    </div>;
+                    <span>
+                        <span>
+                            <div> {u.name} </div>
+                            <div> {u.status} </div>
+                        </span>
+                    </span>
+                    <span>
+                        <div> {"u.location.country"} </div>
+                        <div> {"u.location.city"} </div>
+                    </span>
+                </div>
+                )
+            }
+        </div>;
+    }
 }
 
 export default Users;
