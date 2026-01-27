@@ -6,8 +6,8 @@ import { connect } from "react-redux";
 
 class HeaderContainer extends React.Component {
     componentDidMount() {
-        const email = import.meta.env.EMAIL;
-        const password = import.meta.env.PASSWORD;
+        const email = import.meta.env.VITE_EMAIL;
+        const password = import.meta.env.VITE_PASSWORD;
 
         axios.post('/project/api/1.0/auth/login', {
             email: email,

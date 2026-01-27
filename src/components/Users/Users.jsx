@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Users.module.css";
 import userPhoto from "../../assets/images/user.png";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
 
 let Users = (props) => {
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -27,14 +28,45 @@ let Users = (props) => {
                 <span>
                     <div>
                         <NavLink to={`/profile/${u.id}`}>
-                        <img src={u.photos.small != null ? u.photos.small : userPhoto} className={styles.userPhoto} />
+                            <img src={u.photos.small != null ? u.photos.small : userPhoto} className={styles.userPhoto} />
                         </NavLink>
                     </div>
                     <div>
                         {
                             u.followed
-                                ? <button onClick={() => props.unfollow(u.id)}> Unfollow </button>
-                                : <button onClick={() => props.follow(u.id)}> follow </button>
+                                ? <button onClick={
+                                    () => {
+                                        const apiKey = import.meta.env.VITE_API_KEY;
+                                        axios.delete(`/project/api/1.0/follow/${u.id}`, {
+                                            withCredentials: true,
+                                            headers: {
+                                                "API-KEY": apiKey
+                                            }
+                                        }
+                                        ).then(response => {
+                                                if (response.data.resultCode === 0) {
+                                                    props.unfollow(u.id);
+                                                }
+                                            });
+                                    }
+                                }
+                                > Unfollow </button>
+                                : <button onClick={
+                                    () => {
+                                        const apiKey = import.meta.env.VITE_API_KEY;                                        
+                                        axios.post(`/project/api/1.0/follow/${u.id}`, {}, {
+                                            withCredentials: true,
+                                            headers: {
+                                                "API-KEY": apiKey
+                                            }
+                                        }).then(response => {
+                                                if (response.data.resultCode === 0) {
+                                                    props.follow(u.id);
+                                                }
+                                            });
+                                    }
+                                }
+                                >follow</button>
                         }
                     </div>
                 </span>
