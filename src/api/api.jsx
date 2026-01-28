@@ -20,5 +20,21 @@ export const usersAPI = {
     },
     unfollow(userId) {
         return instance.delete(`follow/${userId}`)
+    },
+    getProfile(userId) {
+        return instance.get(`profile/${userId}`);
+    }
+}
+
+export const authAPI = {
+    me() {
+        return instance.get(`auth/me`)
+    },
+    login() {
+        instance.post('auth/login', {
+            email: import.meta.env.VITE_EMAIL,
+            password: import.meta.env.VITE_PASSWORD,
+            rememberMe: true
+        }).then(response => {});
     }
 }
