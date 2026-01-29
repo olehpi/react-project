@@ -5,6 +5,7 @@ import { followThunkCreator, unfollowThunkCreator, toggleFollowingInProgress,
  } from "../../store/users-reducer";
 import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 class UsersContainer extends React.Component {
 
@@ -51,4 +52,6 @@ let mapDispatchToProps = {
     getUsersForContainer:getUsersThunkCreator
 }   
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
+export default withAuthRedirect(
+    connect(mapStateToProps, mapDispatchToProps)(UsersContainer)
+);
