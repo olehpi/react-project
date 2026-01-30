@@ -52,6 +52,7 @@ let mapDispatchToProps = {
     getUsersForContainer:getUsersThunkCreator
 }   
 
-export default withAuthRedirect(
-    connect(mapStateToProps, mapDispatchToProps)(UsersContainer)
-);
+export default compose(
+    withAuthRedirect,
+    connect(mapStateToProps, mapDispatchToProps),
+)(UsersContainer);
