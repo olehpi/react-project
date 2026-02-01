@@ -29,13 +29,21 @@ class ProfileStatus extends React.Component {
         );
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.status !== this.props.status) {
+            this.setState({
+                status: this.props.status
+            });
+        }
+    }
+
     render() {
         /* 
         if (!props.profile) {
              return <Preloader />
          }
          */
-        return (
+         return (
             <div>
                 {!this.state.editMode &&
                     <div>
