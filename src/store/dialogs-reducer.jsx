@@ -1,4 +1,3 @@
-const UPDATE_NEW_MESSAGE_BODY = 'UPDATE-NEW-MESSAGE-BODY';
 const SEND_MESSAGE = 'SEND-MESSAGE';
 
 let initialState = {
@@ -13,32 +12,21 @@ let initialState = {
         { id: 1, message: 'Hi' },
         { id: 2, message: 'How are you?' },
         { id: 3, message: 'Yo' }
-    ],
-    newMessageBody: 'Enter your message'
+    ]
 };
 
 const dialogsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case UPDATE_NEW_MESSAGE_BODY: 
-            return {
-                ...state,
-                newMessageBody: action.body
-            }
         case SEND_MESSAGE: 
             return {
                 ...state,
-                newMessageBody: '',
-                messagesData: [...state.messagesData, { id: 8, message: state.newMessageBody }]
+                messagesData: [...state.messagesData, { id: 8, message: action.newMessageBody }]
             };
         default:
             return state;
     }
 }
 
-export const sendMessageCreator = () => ({
-    type: SEND_MESSAGE 
-});
-
-export const updateNewMessageBodyCreator = (body) => ({ type: UPDATE_NEW_MESSAGE_BODY, body: body });
+export const sendMessageCreator = (newMessageBody) => ({ type: SEND_MESSAGE, newMessageBody });
 
 export default dialogsReducer;
