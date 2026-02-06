@@ -3,6 +3,8 @@ import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
 import { Navigate } from 'react-router-dom';
 import { Form, Field } from "react-final-form";
+import { Textarea } from '../common/FormsControls/FormsControls';
+import { required, maxLength } from '../../utils/validators/validators';
 
 const Dialogs = (props) => {
     let state = props.messagesPage;
@@ -28,11 +30,21 @@ const Dialogs = (props) => {
     )
 }
 
+
+const composeValidators =
+  (...validators) =>
+  value =>
+    validators.reduce((error, validator) => error || validator(value), undefined);
+
+
 const AddMessageForm = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
-                <Field name="newMessageBody" component="textarea" placeholder="Enter your message" />
+                <Field name="newMessageBody"
+                    component={Textarea}
+                    validate={composeValidators(required, maxLength(50))}
+                    placeholder="Enter your message" />
             </div>
             <div><button>Send</button></div>
         </form>

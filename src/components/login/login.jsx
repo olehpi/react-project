@@ -1,21 +1,35 @@
 import { Form, Field } from "react-final-form";
+import { Input } from '../common/FormsControls/FormsControls';
+import { required } from '../../utils/validators/validators';
+
+const composeValidators =
+    (...validators) =>
+        value =>
+            validators.reduce((error, validator) => error || validator(value), undefined);
 
 const LoginForm = ({ handleSubmit }) => {
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <Field placeholder="Login" name="login" component="input" />
+                <Field name="login"
+                    component={Input}
+                    placeholder="Login"
+                    validate={value => required(value)}
+                />
             </div>
             <div>
-                <Field name="password">
-                    {({ input }) => <input {...input} type="password" placeholder="Password" />}
-                </Field>
+                <Field name="password"
+                    component={Input}
+                    type="password"
+                    placeholder="Password"
+                    validate={composeValidators(required)}
+                />
             </div>
             <div>
-                <Field type="checkbox" name="rememberMe" component="input" /> Remember me
+                <Field type="checkbox" name="rememberMe" component={Input} /> Remember me
             </div>
             <div>
-                <button type="submit">Login</button>
+                <button>Login</button>
             </div>
         </form>
     );
