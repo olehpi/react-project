@@ -4,13 +4,15 @@ import { required } from '../../utils/validators/validators';
 import { login } from "../../store/auth-reducer";
 import { connect } from "react-redux";
 import { Navigate } from 'react-router-dom';
+import style from './../common/FormsControls/FormsControls.module.css';
+
 
 const composeValidators =
     (...validators) =>
         value =>
             validators.reduce((error, validator) => error || validator(value), undefined);
 
-const LoginForm = ({ handleSubmit }) => {
+const LoginForm = ({ handleSubmit, submitError }) => {
     return (
         <form onSubmit={handleSubmit}>
             <div>
@@ -31,6 +33,13 @@ const LoginForm = ({ handleSubmit }) => {
             <div>
                 <Field type="checkbox" name="rememberMe" component={Input} /> Remember me
             </div>
+            {
+                submitError && (
+                    <div className={style.formSymmaryError}>
+                        {submitError}
+                    </div>
+                )
+            }
             <div>
                 <button>Login</button>
             </div>
@@ -39,13 +48,16 @@ const LoginForm = ({ handleSubmit }) => {
 };
 
 const LoginReactFinalForm = ({ onSubmit }) => {
-    return <Form onSubmit={onSubmit} render={({ handleSubmit }) => (<LoginForm handleSubmit={handleSubmit} />)} /> 
+    return <Form onSubmit={onSubmit} render={({ handleSubmit, submitError }) => (
+        <LoginForm
+            handleSubmit={handleSubmit}
+            submitError={submitError}
+        />
+    )} />
 };
 
 const Login = (props) => {
-    const onSubmit = (formData) => {
-        props.login(formData.email, formData.password, formData.rememberMe);
-    };
+    const onSubmit = (formData) => props.login(formData.email, formData.password, formData.rememberMe);
 
     if (props.isAuth) {
         return <Navigate to="/profile" replace />;
