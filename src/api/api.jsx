@@ -43,11 +43,14 @@ export const authAPI = {
     me() {
         return instance.get(`auth/me`)
     },
-    login() {
-        instance.post('auth/login', {
-            email: import.meta.env.VITE_EMAIL,
-            password: import.meta.env.VITE_PASSWORD,
-            rememberMe: true
-        }).then(response => {});
+    login(email, password, rememberMe = false) {
+        return instance.post('auth/login', {
+            email: email,
+            password: password,
+            rememberMe: rememberMe
+        })
+    },
+    logout() {
+        return instance.delete('auth/login');
     }
 }

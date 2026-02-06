@@ -1,6 +1,9 @@
 import { Form, Field } from "react-final-form";
 import { Input } from '../common/FormsControls/FormsControls';
 import { required } from '../../utils/validators/validators';
+import { login } from "../../store/auth-reducer";
+import { connect } from "react-redux";
+import { Navigate } from 'react-router-dom';
 
 const composeValidators =
     (...validators) =>
@@ -11,9 +14,9 @@ const LoginForm = ({ handleSubmit }) => {
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <Field name="login"
+                <Field name="email"
                     component={Input}
-                    placeholder="Login"
+                    placeholder="Email"
                     validate={value => required(value)}
                 />
             </div>
@@ -39,8 +42,14 @@ const LoginReactFinalForm = ({ onSubmit }) => {
     return <Form onSubmit={onSubmit} render={({ handleSubmit }) => (<LoginForm handleSubmit={handleSubmit} />)} /> 
 };
 
-const Login = () => {
-    const onSubmit = (formData) => { console.log(formData); };
+const Login = (props) => {
+    const onSubmit = (formData) => {
+        props.login(formData.email, formData.password, formData.rememberMe);
+    };
+
+    if (props.isAuth) {
+        return <Navigate to="/profile" replace />;
+    }
 
     return (
         <div>
@@ -50,8 +59,7 @@ const Login = () => {
     );
 };
 
-export default Login;
-
-/* // Alternative way to define password field to process its errors
-<Field placeholder={"Password"} name={"password"} component="input" type="password" />
-*/
+const mapStateToProps = (state) => ({
+    isAuth: state.auth.isAuth
+});
+export default connect(mapStateToProps, { login })(Login);
