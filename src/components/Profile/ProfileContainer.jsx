@@ -11,9 +11,12 @@ import { compose } from 'redux';
 class ProfileContainer extends React.Component {
 
   componentDidMount() {
-    let userId = this.props.match.params.userId;
+    let userId = this.props.router.params.userId;
     if (!userId) {
       userId = this.props.autorizedUserId;
+      if (!userId) {
+        this.props.history.push("/login");
+      }
     }
     this.props.getUserProfile(userId);
     this.props.getStatus(userId);
