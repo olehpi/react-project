@@ -7,10 +7,6 @@ import { BrowserRouter} from 'react-router-dom';
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 
-setInterval(() => {
-  store.dispatch({ type: 'FAKE' });
-}, 1000);
-
 root.render(
   /*<React.StrictMode>*/
     <BrowserRouter>
