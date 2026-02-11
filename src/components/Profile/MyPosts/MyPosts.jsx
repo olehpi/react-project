@@ -5,7 +5,12 @@ import { Field, Form } from 'react-final-form';
 import { required, maxLength } from '../../../utils/validators/validators';
 import { Textarea } from '../../common/FormsControls/FormsControls';
 
-const MyPosts = (props) => {
+const MyPosts = React.memo((props) => {
+/*  work only with class component
+schouldComponentUpdate = (nextProps, nextState) => {
+  return nextProps.posts !== this.props.posts || nextProps.newPostText !== this.props.newPostText;
+}
+*/
 
   let onAddPost = (formData) => {
     props.addPost(formData.newPostText);
@@ -20,7 +25,7 @@ const MyPosts = (props) => {
       </div>
     </div>
   )
-}
+});
 
 const composeValidators =
   (...validators) =>
