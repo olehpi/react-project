@@ -1,19 +1,18 @@
 import classes from './ProfileInfo.module.css';
 import Preloader from '../../common/Preloader/Preloader';
 import ProfileStatusWithHooks from './ProfileStatusWithHooks';
+import mountainImage from '../../../assets/images/mountain.jpg';
 
-const ProfileInfo = (props) => {
-  if(!props.profile) {
-      return <Preloader/>    
+
+const ProfileInfo = ({profile, status, updateStatus}) => {
+  if (!profile) {
+    return <Preloader />
   }
-  return <div className={classes.content}> {/*
- 
-      <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQe_OlHEe2L-0VtexCxjIV5tc0dLor3wd57Yg&s' />
- 
-    </div>  */}
+  return <div className={classes.content}>
+    <img src={mountainImage} />
     <div className={classes.descriptionBlock}>
-      <img src={props.profile.photos.large} />
-      <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus} />
+      <img src={profile.photos.large} />
+      <ProfileStatusWithHooks status={status} updateStatus={updateStatus} />
     </div>
   </div>
 }

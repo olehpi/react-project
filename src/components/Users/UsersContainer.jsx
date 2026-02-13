@@ -12,30 +12,31 @@ import { getPageSize, getUsers, getCurrentPage, getFollowingInProgress, getIsFet
 class UsersContainer extends React.Component {
 
     componentDidMount() {
-        this.props.getUsersForContainer(this.props.currentPage, this.props.pageSize)
+        let { currentPage, pageSize } = this.props;
+        this.props.getUsersForContainer(currentPage, pageSize)
     }
 
     onPageChanged = (pageNumber) => {
-        this.props.getUsersForContainer(pageNumber, this.props.pageSize)
+        let { pageSize } = this.props;
+        this.props.getUsersForContainer(pageNumber, pageSize)
     };
 
     render() {
         return <>
-        {  this.props.isFetching ? <Preloader/> : null}
-        <Users totalUsersCount={ this.props.totalUsersCount}
-            pageSize={this.props.pageSize}
-            currentPage={this.props.currentPage}
-            onPageChanged={this.onPageChanged}
-            users={this.props.users}
-            follow={this.props.followForContainer}
-            unfollow={this.props.unfollowForContainer}
-            followingInProgress={this.props.followingInProgress}
-            toggleFollowingProgress={this.props.toggleFollowingProgressForContainer}
-        />
+            {this.props.isFetching ? <Preloader /> : null}
+            <Users totalUsersCount={this.props.totalUsersCount}
+                pageSize={this.props.pageSize}
+                currentPage={this.props.currentPage}
+                onPageChanged={this.onPageChanged}
+                users={this.props.users}
+                follow={this.props.followForContainer}
+                unfollow={this.props.unfollowForContainer}
+                followingInProgress={this.props.followingInProgress}
+                toggleFollowingProgress={this.props.toggleFollowingProgressForContainer}
+            />
         </>
     }
 }
-
 
 let mapStateToProps = (state) => {
     return {
@@ -47,7 +48,6 @@ let mapStateToProps = (state) => {
         followingInProgress: getFollowingInProgress(state)
     };
 }
-
 
 let mapDispatchToProps = {
     followForContainer: followThunkCreator, 

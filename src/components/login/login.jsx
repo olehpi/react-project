@@ -1,5 +1,5 @@
-import { Form, Field } from "react-final-form";
-import { Input } from '../common/FormsControls/FormsControls';
+import { Form } from "react-final-form";
+import { createField, Input } from '../common/FormsControls/FormsControls';
 import { required } from '../../utils/validators/validators';
 import { login } from "../../store/auth-reducer";
 import { connect } from "react-redux";
@@ -7,32 +7,12 @@ import { Navigate } from 'react-router-dom';
 import style from './../common/FormsControls/FormsControls.module.css';
 
 
-const composeValidators =
-    (...validators) =>
-        value =>
-            validators.reduce((error, validator) => error || validator(value), undefined);
-
 const LoginForm = ({ handleSubmit, submitError }) => {
     return (
         <form onSubmit={handleSubmit}>
-            <div>
-                <Field name="email"
-                    component={Input}
-                    placeholder="Email"
-                    validate={value => required(value)}
-                />
-            </div>
-            <div>
-                <Field name="password"
-                    component={Input}
-                    type="password"
-                    placeholder="Password"
-                    validate={composeValidators(required)}
-                />
-            </div>
-            <div>
-                <Field type="checkbox" name="rememberMe" component={Input} /> Remember me
-            </div>
+            {createField("Email", "email", [required], Input)}
+            {createField("Password", "password", [required], Input, { type: "password" })}
+            {createField(null, "rememberMe", [], Input, { type: "checkbox" }, "Remember me")}
             {
                 submitError && (
                     <div className={style.formSymmaryError}>
