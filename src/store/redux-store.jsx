@@ -1,4 +1,4 @@
-import {applyMiddleware, combineReducers, createStore} from "redux";
+import {applyMiddleware, combineReducers, createStore, compose} from "redux";
 import profileReducer from "./profile-reducer";
 import dialogsReducer from "./dialogs-reducer";
 import sidebarReducer from "./sidebar-reducer";
@@ -15,6 +15,14 @@ let reducers = combineReducers({
     auth: authReducer,
     app: appReducer
 });
+
+/*
+*** Check redux devtools extension in browser and use it if available, otherwise use regular compose ***
+
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducers, composeEnhancers(applyMiddleware(thunkMiddleware)));
+*/
 
 let store = createStore(reducers, applyMiddleware(thunkMiddleware));
 
