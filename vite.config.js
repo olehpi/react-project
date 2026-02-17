@@ -1,25 +1,30 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { loadEnv } from 'vite'
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    proxy: {
-      '/project': {
-        target: 'https://social-network.samuraijs.com',
-        changeOrigin: true,
-        secure: true,
-        rewrite: path => path.replace(/^\/project/, ''),
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd())
+
+  return {
+    plugins: [react()],
+    base: env.VITE_GITHUB_REPOSITORY,
+    server: {
+      proxy: {
+        '/project': {
+          target: env.VITE_API_TARGET,
+          changeOrigin: true,
+          secure: true,
+          rewrite: path => path.replace(/^\/project/, ''),
+        },
       },
     },
-  },
-  test: {
-    environment: 'jsdom',      
-    globals: true,             
-    coverage: {
-      reporter: ['text', 'lcov'],
+    test: {
+      environment: 'jsdom',
+      globals: true,
+      coverage: {
+        reporter: ['text', 'lcov'],
+      },
     },
-  },
+  }
 })
 
