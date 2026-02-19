@@ -15,7 +15,7 @@ const LoginForm = ({ handleSubmit, submitError }) => {
             {createField(null, "rememberMe", [], Input, { type: "checkbox" }, "Remember me")}
             {
                 submitError && (
-                    <div className={style.formSymmaryError}>
+                    <div className={style.formSummaryError}>
                         {submitError}
                     </div>
                 )
