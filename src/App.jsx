@@ -48,7 +48,7 @@ class App extends React.Component {
             <Route exact path="/" render={() => <Navigate to="/profile" replace />} />
             <Route path="/dialogs/*" element={<DialogsWithSuspense />} />
             <Route path="/profile/:userId?" element={<ProfileWithSuspense />} />
-            <Route path="/users" element={<UsersContainer />} />
+            <Route path="/users" element={<UsersContainer pageTitle={"Users"} />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="*" element={<div><b>404 Not Found</b></div>} />
           </Routes>
