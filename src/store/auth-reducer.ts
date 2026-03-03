@@ -1,5 +1,7 @@
+import { ResultCodesEnum } from '../api/api';
 import {authAPI, securityAPI} from '../api/api'
 import { FORM_ERROR } from 'final-form';
+import { ResultCodeForCaptchaEnum } from '../api/api';
 
 const SET_USER_DATA = '/auth/SET_USER_DATA';
 const GET_CAPTCHA_URL_SUCCESS = '/auth/SET_CAPTCHA_URL_SUCCESS';
@@ -64,27 +66,27 @@ export const setAuthUserData = (userId: number|null, email: string|null, login: 
 );
 
 export const getAuthUserData = () => async (dispatch: any) => {
-    let response = await authAPI.me();
-    if (response.data.resultCode === 0) {
-        let { id, email, login } = response.data.data;
+    let meData = await authAPI.me();
+    if (meData.resultCode === ResultCodesEnum.Success) {
+        let { id, email, login } = meData.data;
         dispatch(setAuthUserData(id, email, login, true));
     }
-    return response;
+    return meData;
 }
 
 export const login = (email: string, password: string, rememberMe: boolean, captcha: null | undefined) => async (dispatch: any) => {
-    let response = await authAPI.login(email, password, rememberMe, captcha);
-    if (response.data.resultCode === 0) {
+    let loginData = await authAPI.login(email, password, rememberMe, captcha);
+    if (loginData.resultCode === ResultCodesEnum.Success) {
         dispatch(getAuthUserData());
         return undefined;
     } else {
-        if (response.data.resultCode === 10) {
+        if (loginData.resultCode === ResultCodeForCaptchaEnum.CaptchaIsRequired) {
             dispatch(getCaptchaUrl());
             return { [FORM_ERROR]: 'Captcha is required' };
         }
         const message =
-            response.data.messages.length > 0
-                ? response.data.messages[0]
+            loginData.data.messages.length > 0
+                ? loginData.data.messages[0]
                 : "Some error";
 
         return { [FORM_ERROR]: message };

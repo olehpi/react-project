@@ -1,8 +1,8 @@
 import { AppStateType } from './redux-store';
 import { updateObjectInArray } from "../utils/validators/object-helpers";
-import { usersAPI } from "../api/api"
+import { usersAPI, ResultCodesEnum } from "../api/api"
 import { UserType } from "../types/types";
-import { Action, Dispatch } from 'redux';
+import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 const FOLLOW = 'FOLLOW';
@@ -161,7 +161,7 @@ export const _followUnfollowFlow = async (
     actionCreator: (userId: number) => FollowSuccessActionType | UnfollowSuccessActionType) => {
         dispatch(toggleFollowingInProgress(true, userId));
     let response = await apiMethod(userId);
-    if (response.data.resultCode === 0) { dispatch(actionCreator(userId)); }
+    if (response.data.resultCode === ResultCodesEnum.Success) { dispatch(actionCreator(userId)); }
     dispatch(toggleFollowingInProgress(false, userId));
 }
 
