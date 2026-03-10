@@ -10,8 +10,8 @@ import App from './App'
 import appReducer from './store/app-reducer'
 import authReducer from './store/auth-reducer'
 
-vi.mock('./api/api', () => {
-  const original = vi.importActual('./api/api')
+vi.mock('./api/auth-api', () => {
+  const original = vi.importActual('./api/auth-api')
   return {
     ...original,
     authAPI: {
