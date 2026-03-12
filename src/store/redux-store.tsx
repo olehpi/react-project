@@ -1,4 +1,4 @@
-import {applyMiddleware, combineReducers, createStore, compose, Action} from "redux";
+import {applyMiddleware, combineReducers, createStore, Action} from "redux";
 import profileReducer from "./profile-reducer";
 import dialogsReducer from "./dialogs-reducer";
 import sidebarReducer from "./sidebar-reducer";
@@ -19,8 +19,7 @@ let rootReducer = combineReducers({
 type RootReducerType = typeof rootReducer;
 export type AppStateType = ReturnType<RootReducerType>
 
-type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U : never
-export type InferActionsTypes<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<PropertiesTypes<T>>
+export type InferAsyncActionsTypes<T> = T extends { [key: string]: (...args: any[]) => infer U } ? U : never;
 
 export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A>;
 

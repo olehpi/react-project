@@ -1,21 +1,23 @@
 import d from './Dialogs.module.css'
 import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
-import { Navigate } from 'react-router-dom';
-import { Form, Field } from "react-final-form";
+import { Form, FormRenderProps } from "react-final-form";
 import { Textarea } from '../common/FormsControls/FormsControls';
 import { required, maxLength } from '../../utils/validators/validators';
+import { InitialStateType } from '../../store/dialogs-reducer';
+import { createField } from '../common/FormsControls/FormsControls';
 
-const Dialogs = (props) => {
+type PropsType = {
+    messagesPage: InitialStateType
+    sendMessage: (newMessageBody: string) => void
+}
+
+const Dialogs: React.FC<PropsType> = (props) => {
     let state = props.messagesPage;
     const dialogsElements = state.dialogsData.map(dialog => <DialogItem key={dialog.id} name={dialog.name} id={dialog.id} />);  
     const messagesElements = state.messagesData.map(message => <Message key={message.id} message={message.message} />);
-    
-   if(!props.isAuth) {
-        return <Navigate to={'/login'} replace></Navigate>
-    }
 
-    const addNewMessage = (formData) => { 
+    const addNewMessage = (formData: { newMessageBody: string; }) => { 
         props.sendMessage(formData.newMessageBody);
     }
 
@@ -30,28 +32,32 @@ const Dialogs = (props) => {
     )
 }
 
+export type NewMessageFormType = {
+    newMessageBody: string
+}
 
-const composeValidators =
-  (...validators) =>
-  value =>
-    validators.reduce((error, validator) => error || validator(value), undefined);
+type NewMessageFormValuesKeysType = Extract<keyof NewMessageFormType, string>
 
+interface AddMessageFormProps {
+    handleSubmit: FormRenderProps<NewMessageFormType>["handleSubmit"]
+}
 
-const AddMessageForm = (props) => {
+const AddMessageForm: React.FC<AddMessageFormProps> = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
-                <Field name="newMessageBody"
-                    component={Textarea}
-                    validate={composeValidators(required, maxLength(50))}
-                    placeholder="Enter your message" />
+                {createField<NewMessageFormValuesKeysType>("Enter your message", "newMessageBody", [required, maxLength(50)], Textarea, {})}
             </div>
             <div><button>Send</button></div>
         </form>
     )
 }
 
-const AddMessageReactFinalForm = ({ onSubmit }) => {
+type AddMessageReactFinalFormProps = {
+    onSubmit: (values: NewMessageFormType) => void
+}
+
+const AddMessageReactFinalForm = ({ onSubmit }: AddMessageReactFinalFormProps) => {
     return <Form onSubmit={onSubmit} render={({ handleSubmit }) => (<AddMessageForm handleSubmit={handleSubmit} />)} /> 
 };
 

@@ -81,7 +81,7 @@ export type LoginFormValuesType = {
     captcha?: string;
 };
 
-type LoginFormValuesTypeKeys = Extract<keyof LoginFormValuesType, string>
+export type LoginFormValuesTypeKeys = Extract<keyof LoginFormValuesType, string>
 
 const Login: React.FC<PropsFromRedux> = (props) => {
     const onSubmit = (formData: LoginFormValuesType) => props.login(formData.email, formData.password, formData.rememberMe, formData.captcha);
