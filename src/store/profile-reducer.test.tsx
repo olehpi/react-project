@@ -8,8 +8,7 @@ let state = {
         { id: 4, message: 'Hello!', likesCount: 11 }
     ],
     profile: null,
-    status: "",
-    newPostText: ""
+    status: ""
 };
 
 it('new post should be added', () => {

@@ -16,7 +16,7 @@ export type ContactsType = {
 }
 
 export type PhotosType = {
-    smail: string | null
+    small: string | null
     large: string | null
 }
 
@@ -24,10 +24,11 @@ export type ProfileType = {
     userId: number
     lookingForJob: boolean
     likesCount: number
-    lookingForJobDescrption: string
+    lookingForJobDescription: string
     fullName: string
     contacts: ContactsType
-    photos: PhotosType
+    photos: PhotosType,
+    aboutMe: string
 };
 
 export type UserType = {
@@ -35,4 +36,9 @@ export type UserType = {
     name: string
     status: string
     photos: PhotosType
+    followed: boolean
+    location?: {
+        city: string
+        country: string
+    }
 };

@@ -1,9 +1,16 @@
 import { NavLink } from 'react-router-dom';
 import s from './Header.module.css';
+import creativeLogo from '../../assets/images/creative-logo.jpg';
 
-const Header = (props) => {
+export type PropsType = {
+    isAuth: boolean
+    login: string | null
+    logout: () => void
+}
+
+const Header: React.FC<PropsType> = (props) => {
     return <header className={s.header}>
-        <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxMOQxU2IdDkXh_4DnrcAsfpR7UCrIozgMkg&s' />
+        <img src={creativeLogo} />
         <div className={s.loginBlock}>
             {
                 props.isAuth

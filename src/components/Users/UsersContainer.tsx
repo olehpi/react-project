@@ -84,4 +84,4 @@ export default compose(
     withAuthRedirect,
     connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>
     (mapStateToProps, mapDispatchToProps),
-)(UsersContainer);
+)(UsersContainer) as React.ComponentType<OwnPropsType>;

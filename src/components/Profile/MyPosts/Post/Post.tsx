@@ -1,9 +1,15 @@
 import classes from './Post.module.css';
+import clientImage from '../../../../assets/images/client.jpg';
 
-const Post = (props) => {
+type PropsType = {
+  message: string
+  likesCount: number
+}
+
+const Post: React.FC<PropsType> = (props) => {
   return (
     <div className={classes.item}>
-      <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYHoyQNil3iW7vA-Ryc2IwTJtq-9bWqWfE_g&s' />
+      <img src={clientImage} />
       <div>
         {props.message}
         <div><span>Like: {props.likesCount}</span></div>

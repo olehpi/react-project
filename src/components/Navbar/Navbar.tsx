@@ -1,8 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import c from './Navbar.module.css';
 
-console.log("c1 ", c.activeLink);
-const Navbar = () => {
+const Navbar: React.FC = () => {
   return <nav className={c.nav}>
     <div className={c.item}>
       <NavLink to="/profile" className={({ isActive }) => isActive ? c.activeLink : undefined}>Profile</NavLink>

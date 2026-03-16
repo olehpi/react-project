@@ -33,8 +33,9 @@ export const Input: React.FC<any> = (props) => {
     return <FormControl {...props}><input {...input} {...restProps} /></FormControl>
 }
 
-
-export function createField<FormKeysType extends string> (placeholder: string | undefined, name: FormKeysType,
+export function createField<FormKeysType extends string> (
+    placeholder: string | undefined, 
+    name: FormKeysType,
     validators: Array<FieldValidtorType>,
     component: React.ComponentType<any>,
     props: {}, text = "") {
@@ -51,6 +52,8 @@ export function createField<FormKeysType extends string> (placeholder: string | 
         </div>
     )
 }
+
+export type GetStringKeys<T> = Extract<keyof T, string>
 
 const composeValidators =
     (...validators: Array<FieldValidtorType>) =>
