@@ -1,12 +1,9 @@
 import '@testing-library/jest-dom'
-import { screen } from '@testing-library/react'
+import { screen, render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, EnhancedStore } from '@reduxjs/toolkit'
 import App from './App'
-
-
 import appReducer from './store/app-reducer'
 import authReducer from './store/auth-reducer'
 
@@ -24,11 +21,26 @@ vi.mock('./api/auth-api', () => {
   }
 })
 
+type RootState = {
+  app: ReturnType<typeof appReducer>
+  auth: ReturnType<typeof authReducer>
+}
 
-const renderWithProviders = (ui, { preloadedState, store = configureStore({
-  reducer: { app: appReducer, auth: authReducer },
-  preloadedState
-}) } = {}) => {
+type RenderWithProvidersOptions = {
+  preloadedState?: Partial<RootState>
+  store?: EnhancedStore<RootState>
+}
+
+const renderWithProviders = (
+  ui: React.ReactElement,
+  {
+    preloadedState,
+    store = configureStore({
+      reducer: { app: appReducer, auth: authReducer },
+      preloadedState,
+    }),
+  }: RenderWithProvidersOptions = {}
+) => {
   return render(
     <Provider store={store}>
       <MemoryRouter initialEntries={['/']}>
@@ -38,10 +50,11 @@ const renderWithProviders = (ui, { preloadedState, store = configureStore({
   )
 }
 
+const TypedApp = App as React.FC
+
 test('renders header', async () => {
-  renderWithProviders(<App />)
+  renderWithProviders(<TypedApp />)
 
   const header = await screen.findByRole('banner')
   expect(header).toBeInTheDocument()
 })
-

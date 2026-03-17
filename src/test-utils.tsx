@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import store from './store/redux-store' 
 
-export function renderWithProviders(ui) {
+export function renderWithProviders(ui: React.ReactElement) {
   return render(
     <Provider store={store}>
       <BrowserRouter>
