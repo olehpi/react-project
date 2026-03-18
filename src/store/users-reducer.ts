@@ -1,6 +1,6 @@
 import { BaseThunkType, InferActionsTypes } from './redux-store';
 import { updateObjectInArray } from "../utils/validators/object-helpers";
-import { ResultCodesEnum } from "../api/api"
+import { APIResponseType, ResultCodesEnum } from "../api/api"
 import { UserType } from "../types/types";
 import { Dispatch } from 'redux';
 import { usersAPI } from '../api/users-api';
@@ -14,7 +14,7 @@ let initialState = {
     followingInProgress: [] as Array<number> // array of user iDs
 };
 
-type InitialStateType = typeof initialState;
+export type InitialStateType = typeof initialState;
 type ActionsTypes = InferActionsTypes<typeof actions>
 type ThunkType = BaseThunkType<ActionsTypes>;
 
@@ -79,7 +79,7 @@ export const followThunkCreator = (userId: number): ThunkType => {
     return async (dispatch) => {
         const apiMethod = usersAPI.follow.bind(usersAPI);
         const actionCreator = actions.followSuccess;
-        _followUnfollowFlow(dispatch, userId, apiMethod, actionCreator);
+        await _followUnfollowFlow(dispatch, userId, apiMethod, actionCreator);
     }
 }
 
@@ -87,19 +87,21 @@ export const unfollowThunkCreator = (userId: number): ThunkType => {
     return async (dispatch) => {
         const apiMethod = usersAPI.unfollow.bind(usersAPI);
         const actionCreator = actions.unfollowSuccess;
-        _followUnfollowFlow(dispatch, userId, apiMethod, actionCreator);
+        await _followUnfollowFlow(dispatch, userId, apiMethod, actionCreator);
     }
 }
 
 export const _followUnfollowFlow = async (
     dispatch: Dispatch<ActionsTypes>,
     userId: number,
-    apiMethod: any,
+    apiMethod: (userId: number) => Promise<APIResponseType>,
     actionCreator: (userId: number) => ActionsTypes) => {
         dispatch(actions.toggleFollowingInProgress(true, userId));
-    let response = await apiMethod(userId);
-    if (response.data.resultCode === ResultCodesEnum.Success) { dispatch(actionCreator(userId)); }
-    dispatch(actions.toggleFollowingInProgress(false, userId));
-}
+        let response = await apiMethod(userId);
+        if (response.resultCode == 0) { 
+            dispatch(actionCreator(userId)); 
+        }
+        dispatch(actions.toggleFollowingInProgress(false, userId));
+    }
 
 export default usersReducer;

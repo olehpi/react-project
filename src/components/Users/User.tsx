@@ -20,17 +20,18 @@ let User: React.FC<PropsType> = ({ user, followingInProgress, unfollow, follow }
                 </NavLink>
             </div>
             <div>
-                {
-                    user.followed
-                        ? <button
-                            disabled={followingInProgress.some(id => id === user.id)}
-                            onClick={() => { unfollow(user.id) }}
-                        > Unfollow </button>
-                        : <button
-                            disabled={followingInProgress.some(id => id === user.id)}
-                            onClick={() => { follow(user.id) }}
-                        >follow</button>
-                }
+                <button
+                    disabled={followingInProgress.some(id => id === user.id)}
+                    onClick={() => {
+                        if (user.followed) {
+                            unfollow(user.id);
+                        } else {
+                            follow(user.id);
+                        }
+                    }}
+                >
+                    {user.followed ? "Unfollow" : "Follow"}
+                </button>
             </div>
         </span>
         <span>

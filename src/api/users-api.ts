@@ -1,15 +1,16 @@
-import { Axios } from "axios";
 import { getItemsType, instance, ResponseType } from "./api";
 
 export const usersAPI = {
-    getUsers(currentPage = 1, pageSize = 10) {
-        return instance.get<getItemsType>(`users?page=${currentPage}&count=${pageSize}`)
-            .then(res => { return res.data })
+    async getUsers(currentPage = 1, pageSize = 10) {
+        const res = await instance.get<getItemsType>(`users?page=${currentPage}&count=${pageSize}`);
+        return res.data;
     },
-    follow(userId: number) {
-        return instance.post<ResponseType>(`follow/${userId}`).then(res => res.data)
+    async follow(userId: number) {
+        const res = await instance.post<ResponseType>(`follow/${userId}`);
+        return res.data;
     },
-    unfollow(userId: number) {
-        return instance.delete(`follow/${userId}`).then(res => res.data) as Promise<ResponseType>;
+    async unfollow(userId: number) {
+        const res = await instance.delete<ResponseType>(`follow/${userId}`);
+        return res.data;
     }
 }
