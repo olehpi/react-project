@@ -30,4 +30,8 @@ const getFollowingInProgress = (state: AppStateType) => {
   return state.usersPage.followingInProgress;
 }
 
-export { getUsers, getPageSize, getTotalUsersCount, getCurrentPage, getIsFetching, getFollowingInProgress };
+const getUsersFilter = (state: AppStateType) => {
+  return state.usersPage.filter;
+}
+
+export { getUsers, getPageSize, getTotalUsersCount, getCurrentPage, getIsFetching, getFollowingInProgress, getUsersFilter };
