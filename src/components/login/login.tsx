@@ -2,9 +2,10 @@ import { Form } from "react-final-form";
 import { createField, GetStringKeys, Input } from '../common/FormsControls/FormsControls';
 import { required } from '../../utils/validators/validators';
 import { login } from "../../store/auth-reducer";
-import { connect, ConnectedProps } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from 'react-router-dom';
 import style from './../common/FormsControls/FormsControls.module.css';
+import type { AppDispatch } from "../../store/redux-store";
 import { AppStateType } from "../../store/redux-store";
 import { FORM_ERROR } from 'final-form';
 
@@ -54,19 +55,6 @@ const LoginReactFinalForm: React.FC<LoginReactFinalFormProps> = ({ onSubmit, cap
     />
 );
 
-type MapStateToPropsType = {
-    isAuth: boolean;
-    captchaUrl: string | null;
-};
-
-const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
-    isAuth: state.auth.isAuth,
-    captchaUrl: state.auth.captchaUrl
-});
-
-const connector = connect(mapStateToProps, { login });
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
 export type LoginFormValuesType = {
     email: string;
     password: string;
@@ -76,17 +64,24 @@ export type LoginFormValuesType = {
 
 export type LoginFormValuesTypeKeys = GetStringKeys<LoginFormValuesType>
 
-const Login: React.FC<PropsFromRedux> = (props) => {
-    const onSubmit = (formData: LoginFormValuesType) => props.login(formData.email, formData.password, formData.rememberMe, formData.captcha);
+export const LoginPage: React.FC = () => {
 
-    if (props.isAuth) return <Navigate to="/profile" replace />;
+    const captchaUrl = useSelector((state: AppStateType) => state.auth.captchaUrl);
+    const isAuth = useSelector((state: AppStateType) => state.auth.isAuth);
+    const dispatch = useDispatch<AppDispatch>();
+
+    const onSubmit = (formData: LoginFormValuesType) =>
+        dispatch(
+            login(formData.email, formData.password, formData.rememberMe, formData.captcha ?? null)
+        );
+
+
+    if (isAuth) return <Navigate to="/profile" replace />;
 
     return (
         <div>
             <h1>Login</h1>
-            <LoginReactFinalForm onSubmit={onSubmit} captchaUrl={props.captchaUrl} />
+            <LoginReactFinalForm onSubmit={onSubmit} captchaUrl={captchaUrl} />
         </div>
     );
 };
-
-export default connector(Login);

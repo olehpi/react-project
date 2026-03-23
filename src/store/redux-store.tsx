@@ -32,4 +32,6 @@ const store = createStore(reducers, composeEnhancers(applyMiddleware(thunkMiddle
 
 let store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
+export type AppDispatch = typeof store.dispatch;
+
 export default store;
