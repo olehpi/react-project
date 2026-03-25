@@ -6,6 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../../store/redux-store";
 import { getCurrentPage, getFollowingInProgress, getPageSize, getTotalUsersCount, getUsers, getUsersFilter } from "../../store/users-selectors";
 import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+
+type QueryParamsType = {
+    term?: string
+    friend?: string
+    page?: string
+}
 
 export const Users = () => {
 
@@ -17,10 +25,56 @@ export const Users = () => {
     const followingInProgress = useSelector(getFollowingInProgress);
 
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        dispatch(getUsersThunkCreator(currentPage, pageSize, filter))
+        const params = new URLSearchParams(location.search);
+        const parsed: QueryParamsType = {
+            term: params.get("term") ?? undefined,
+            friend: params.get("friend") ?? undefined,
+            page: params.get("page") ?? undefined,
+        };
+        let actualPage = currentPage;
+        let actualFilter = filter;
+
+        if(!!parsed.page) {
+            actualPage = Number(parsed.page);
+        }
+
+        if(!!parsed.term) {
+            actualFilter = {...actualFilter, term: parsed.term as string};
+        }
+
+        switch (parsed.friend) {
+            case "null":
+                actualFilter = { ...actualFilter, friend: null };
+                break;
+            case "true":
+                actualFilter = { ...actualFilter, friend: true };
+                break;
+            case "false":
+                actualFilter = { ...actualFilter, friend: false };
+                break;
+        }   
+
+        debugger;
+        dispatch(getUsersThunkCreator(actualPage, pageSize, actualFilter))
     }, [])
+
+    useEffect(() => {
+
+        const params = new URLSearchParams();
+        if(!!filter.term) params.set("term", filter.term);
+        if(filter.friend !== null) params.set("friend", String(filter.friend));
+        if(currentPage !== 1) params.set("page", String(currentPage));
+
+        const search = params.toString();
+        navigate({
+            pathname: "/users",
+            search: search ? `?${search}` : "",
+        });
+    }, [filter, currentPage])
 
     const onPageChanged = (pageNumber: number) => {
         dispatch(getUsersThunkCreator(pageNumber, pageSize, filter));
