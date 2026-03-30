@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
       <NavLink to="/dialogs" className={({ isActive }) => isActive ? c.activeLink : undefined}>Messages</NavLink>
     </div>
     <div className={c.item}>
-      <NavLink to="/users" className={({ isActive }) => isActive ? c.activeLink : undefined}>Contacts</NavLink>
+      <NavLink to="/developers" className={({ isActive }) => isActive ? c.activeLink : undefined}>Contacts</NavLink>
     </div>
     <div className={c.item}>
       <NavLink to="/news">News</NavLink>

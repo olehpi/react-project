@@ -71,7 +71,7 @@ export const Users = () => {
 
         const search = params.toString();
         navigate({
-            pathname: "/users",
+            pathname: "/developers",
             search: search ? `?${search}` : "",
         });
     }, [filter, currentPage])
