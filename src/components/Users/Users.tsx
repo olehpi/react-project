@@ -57,8 +57,6 @@ export const Users = () => {
                 actualFilter = { ...actualFilter, friend: false };
                 break;
         }   
-
-        debugger;
         dispatch(getUsersThunkCreator(actualPage, pageSize, actualFilter))
     }, [])
 

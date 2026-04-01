@@ -19,10 +19,11 @@ import { Header } from './components/Header/Header';
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
+const ChatPage = React.lazy(() => import('./pages/chat/ChatPage'));
 
 const items2: MenuProps['items'] = [
   {
-    key: 'sub1',
+    key: 'sub11',
     icon: <UserOutlined />,
     label: 'My Profile',
     children: [
@@ -35,7 +36,7 @@ const items2: MenuProps['items'] = [
     ],
   },
   {
-    key: 'sub2',
+    key: 'sub21',
     icon: <LaptopOutlined />,
     label: 'Developers',
     children: [
@@ -44,7 +45,16 @@ const items2: MenuProps['items'] = [
       }
     ],
   },
+  {
+    key: 'sub31',
+    icon: <LaptopOutlined />,
+    label: 'Chats',
+    children: [
+      { key: '6', label: <Link to="/chat">Chat</Link> },
+    ],
+  },
 ];
+
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
 
@@ -76,6 +86,7 @@ class App extends React.Component<AppPropsType> {
 
     const DialogsWithSuspense = withSuspense(DialogsContainer);
     const ProfileWithSuspense = withSuspense(ProfileContainer);
+    const ChatPageWithSuspense = withSuspense(ChatPage);
 
     return (
       <Layout>
@@ -104,6 +115,7 @@ class App extends React.Component<AppPropsType> {
                 <Route path="/profile/:userId?" element={<ProfileWithSuspense />} />
                 <Route path="/developers" element={<UsersPage pageTitle={"Developers"} />} />
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/chat" element={<ChatPageWithSuspense />} />
                 <Route path="*" element={<div><b>
                   404 Not Found
                   <Button>Ok</Button>

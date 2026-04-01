@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Avatar, Button, Col, Layout, Menu, MenuProps, Row } from 'antd';
-import { LaptopOutlined, UserOutlined } from '@ant-design/icons';
+import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import { selectCurrentUserLogin, selectIsAuth } from '../../store/auth-selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/auth-reducer';
@@ -26,6 +26,14 @@ const items1: MenuProps['items'] = [
             { key: '5', label: <Link to="/developers">Contacts</Link> },
         ],
     },
+    {
+        key: 'sub3',
+        icon: <NotificationOutlined />,
+        label: 'Chats',
+        children: [
+            { key: '6', label: <Link to="/chat">Chat</Link> },
+        ],
+    }
 ];
 
 export const Header: React.FC<PropsType> = (props) => {
